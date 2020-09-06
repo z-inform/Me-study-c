@@ -2,13 +2,20 @@
 #include <stdlib.h>
 #include <math.h>
 
+const double eps = 1e-7;
+
+bool isZero ( double value){
+    if ( (value <= eps) && (value >= - eps) ) return true;
+    else return false;
+    }
+
 void solveLinear (double a, double b){ // ax + b = 0
     printf("Solving linear equation: %gx + (%g) = 0\n", a, b);
-    if ( (a == 0) && (b == 0)) printf ("Infinite number of roots\n");
+    if ( isZero(a) && isZero(b) ) printf ("Infinite number of roots\n");
 
-    else if ( (a == 0) && (b != 0)) printf ("There are no roots\n");
+    else if ( (isZero(a))  && ( !isZero(b) ) ) printf ("There are no roots\n");
 
-    else if ( (a != 0) && (b != 0))
+    else if ( ( !isZero(a) ) && ( !isZero(b) ) )
         {
         double root = -b / a;
         printf ("Root of the equation is: %g\n", root);
@@ -23,8 +30,8 @@ void solveQuadratic (double a, double b, double c){ // ax^2 + bx + c = 0
 
     double dis = pow(b, 2) - 4*a*c;
 
-    if ( dis < 0 ) printf("Discriminant below zero, no roots\n");
-    else if ( dis == 0 ) {
+    if ( dis < - eps ) printf("Discriminant below zero, no roots\n");
+    else if ( isZero(dis) ) {
         root1 = -b/(2*a);
         printf("Discriminant is zero, one root: %g\n", root1);
         }
@@ -47,7 +54,7 @@ int main(){
     printf("c = "); scanf("%lg", &c);
     printf("\n");
 
-    if ( a == 0 ) solveLinear( b, c );
+    if ( isZero(a) ) solveLinear( b, c );
     else solveQuadratic( a, b, c );
 
     printf("\nYour equation is solved\n");
