@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <math.h>
 
+bool isZero (double value);
+void solveLinear(double a, double b);
+void solveQuadratic(double a, double b, double c);
+
+
 const double eps = 1e-7;
 
 bool isZero ( double value){
@@ -47,7 +52,7 @@ int main(){
     double b = 0;
     double c = 0;
 
-    printf("Equation solver 1.0 by _: \"Solve your equation absolutely free\"\n"
+    printf("Equation solver 1.0 by Me: \"Solve your equation absolutely free\"\n"
            "Enter coeffs. for your equation (ax^2 + bx + c = 0)\n");
     printf("a = "); scanf("%lg", &a);
     printf("b = "); scanf("%lg", &b);
