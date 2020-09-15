@@ -42,7 +42,7 @@ int main() {
 	printf("c = ");
 	c = getnum();
 
-    if ( isZero(a) ) solveLinear( b, c, &root1 );
+    if ( a == 0 ) solveLinear( b, c, &root1 );
     else solveQuadratic( a, b, c, &root1, &root2 );
 
     printf("\nYour equation is solved\n");
