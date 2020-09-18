@@ -9,9 +9,10 @@ int testQuad(double a, double b, double c, int num, double root1, double root2);
 int testLin(double a, double b, int num, double root);
 double getnum();
 
-const double eps = 1e-7;
+const double eps = 1e-7; // a < eps => a = 0
 const int noRoots = -1;
 const int infRoots = -2;
+const double epsIgnore = 1e-4; // diifference between coeffs when a is considered 0
 
 int main() {
     double a = 0;// ax^2 + bx + c = 0
@@ -42,7 +43,10 @@ int main() {
 	printf("c = ");
 	c = getnum();
 
-    if ( a == 0 ) solveLinear( b, c, &root1 );
+    if ( ((fabs(a / b) < epsIgnore) && (fabs(a / c) < epsIgnore)) ||
+         ((fabs(a / b) < epsIgnore) && isZero(c) && !isZero(b)) ||
+         ((fabs(a / c) < epsIgnore) && isZero(b) && !isZero(a)) ||
+           isZero(a) )     solveLinear( b, c, &root1 );
     else solveQuadratic( a, b, c, &root1, &root2 );
 
     printf("\nYour equation is solved\n");
@@ -51,27 +55,26 @@ int main() {
 }
 
 bool isZero (double value) {
-    if ( (value <= eps) && (value >= - eps) ) return true;
-    else return false;
+	return ( fabs(value) < eps );
 }
 
 int solveLinear (double a, double b, double* root) { // ax + b = 0
     printf("Solving linear equation: %gx + (%g) = 0\n", a, b);
 
     if ( isZero(a) && isZero(b) ) {
-		printf ("Infinite number of roots\n");
+		printf ("\nInfinite number of roots\n");
 		return infRoots;
 		}
 
     else if ( (isZero(a))  && ( !isZero(b) ) ) {
-		printf ("There are no roots\n");
+		printf ("\nThere are no roots\n");
 		return noRoots;
 		}
 
     else {
         *root = -b / a;
 		if (isZero(*root)) *root = 0;
-        printf ("Root of the equation is: %g\n", *root);
+        printf ("\nRoot of the equation is: %g\n", *root);
 		return 1;
         }
 }
@@ -83,13 +86,13 @@ int solveQuadratic (double a, double b, double c, double* root1, double* root2) 
     double dis = pow(b, 2) - 4*a*c;
 
     if ( dis < - eps ){
-		printf("Discriminant below zero, no roots\n");
+		printf("\nDiscriminant below zero, no roots\n");
 		return noRoots;
 		}
     else if ( isZero(dis) ) {
         *root1 = -b/(2*a);
 		if (isZero(*root1)) *root1 = 0;
-        printf("Discriminant is zero, one root: %g\n", *root1);
+        printf("\nDiscriminant is zero, one root: %g\n", *root1);
 		return 1;
         }
     else {
@@ -97,7 +100,7 @@ int solveQuadratic (double a, double b, double c, double* root1, double* root2) 
 		if (isZero(*root1)) *root1 = 0;
         *root2 = (-b - sqrt(dis))/(2*a);
 		if (isZero(*root2)) *root2 = 0;
-        printf("Discriminant more than zero, two roots: %g, %g\n", *root1, *root2);
+        printf("\nDiscriminant more than zero, two roots: %g, %g\n", *root1, *root2);
 		return 2;
         }
 }
