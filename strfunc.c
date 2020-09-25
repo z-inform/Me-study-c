@@ -15,7 +15,7 @@ int main(){
 char* strcat(char* pstr1, char* pstr2){
 
     int counter = 0;
-    char *presstr = (char*) malloc(sizeof(char));
+    char *presstr = (char*) calloc(1, sizeof(char));
 
 
     for (; pstr1[counter] != '\0'; counter++){
