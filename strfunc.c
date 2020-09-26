@@ -19,17 +19,17 @@ char* strcat(char* pstr1, char* pstr2){
 
 
     for (; pstr1[counter] != '\0'; counter++){
-        presstr = (char*) realloc(presstr, sizeof(char));
+        presstr = (char*) realloc(presstr, counter*sizeof(char));
         presstr[counter] = pstr1[counter];
     }
 
     
     for (int i = 0; pstr2[i] != '\0'; i++){
-        presstr = (char*) realloc(presstr, sizeof(char));
+        ++counter;
+        presstr = (char*) realloc(presstr, counter*sizeof(char));
         presstr[counter] = pstr2[i];
-        counter++;
     }
     
-return &presstr[0];
+return presstr;
 }
 
