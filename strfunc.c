@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstring>
+#include <assert.h>
 
 char* strcat(char* pstr1, char* pstr2);
 char* strtok(char* str, char* del);
@@ -18,7 +19,11 @@ int main(){
     res = strcat(res, str2);
     res = strtok(str5, del);
     puts(res);
-    printf("\n");
+    res = strtok(NULL, del);
+    puts(res);
+    res = strtok(NULL, del);
+    if ( res == NULL ) puts(str5);
+    else puts(res);
     return 0;
 }
 
@@ -42,20 +47,28 @@ char* strcat(char* pstr1, char* pstr2){
 }
 
 char* strtok(char* str, char* del){
+    
+    static char* endpointer;
+    char* begp;
+    
+    if( str != NULL){  
+        endpointer = str;
+    }
 
-    char* lex = (char*) calloc(strlen(str) + 1, sizeof(char));
+    assert(endpointer != NULL);
 
-    for(int i = 0; (str[i] != '\0'); i++){
+    for(int i = 0; endpointer[i] != '\0'; i++){
 
         for(int c = 0; del[c] != '\0'; c++){
-            if( str[i] == del[c]){
-                lex = (char*) realloc(lex, (strlen(lex) + 1)*sizeof(char));
-                return lex;
+            if( endpointer[i] == del[c]){
+                endpointer[i] = '\0';
+                begp = endpointer;
+                endpointer = &endpointer[i+1];
+                return begp;
             }
-            else lex[i] = str[i];
         }
 
     }
-    return lex;
+    return NULL;
 }
     
