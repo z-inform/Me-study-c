@@ -14,7 +14,7 @@ int main(){
     char str5[50] = "-,-alylala,,,, 15 - lastly-";
     char del[5] = ",-";
     char* res;
-    res = strtok(str3, del);
+    res = strtok(str2, del);
     if( res != NULL ) puts(res);
     else printf("Но тут же одни делимитеры\n");
     res = strtok(str5, del);
@@ -99,6 +99,7 @@ char* strtok(char* str, char* del){
 
         }
         
+        if( !inDelimiter && beginningFlag ) beginningFlag = false;     
 
     }   
     
