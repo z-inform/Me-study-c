@@ -5,6 +5,7 @@
 
 char* strcat(char* pstr1, char* pstr2);
 char* strtok(char* str, char* del);
+int diystrcmp(const char* str1, const char* str2);
 
 int main(){
     char str1[500] = "LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOng";
@@ -14,7 +15,7 @@ int main(){
     char str5[50] = "-,-alylala,,,, 15 - lastly-";
     char del[5] = ",-";
     char* res;
-    res = strtok(str2, del);
+    /*res = strtok(str2, del);
     if( res != NULL ) puts(res);
     else printf("Но тут же одни делимитеры\n");
     res = strtok(str5, del);
@@ -22,9 +23,27 @@ int main(){
         puts(res);
         res = strtok(NULL, del);
     }
+    */
+
+    printf("%d\n", diystrcmp(str2, str4));
 
     return 0;
 }
+
+int diystrcmp(const char* str1, const char* str2){
+    
+    int i = 0;
+
+    for(; (str1[i] != '\0') && (str2[i] != '\0'); i++){
+        if( str1[i] > str2[i] ) return 1;
+        else if( str1[i] < str2[i] ) return -1;
+    }
+
+    if( (str1[i] == '\0') && (str2[i] == '\0') ) return 0;
+    else if( str1[i] == '\0' ) return -1;
+         else return 1;
+}
+
 
 char* strcat(char* pstr1, char* pstr2){
 
@@ -66,7 +85,6 @@ char* strtok(char* str, char* del){
     if( *endpointer == '\0' ) return NULL; //Возвращаем NULL если достигли конца строки
 
     for(; endpointer[i] != '\0'; i++){ 
-
         if( !inDelimiter ){                       //Проверяем на первый делимитер
             for(int c = 0; del[c] != '\0'; c++){
                 if( del[c] == endpointer[i] ){
@@ -96,11 +114,9 @@ char* strtok(char* str, char* del){
                 endpointer += i;
                 return begpointer;
             }
-
         }
         
         if( !inDelimiter && beginningFlag ) beginningFlag = false;     
-
     }   
     
     if( inDelimiter ) endpointer[tokenEnd] = '\0'; //В случае выхода из-за конца строки так же ставим \0 в конце токена, но не перемещаем endpointer на следующий символ (а то segfault будет) 
