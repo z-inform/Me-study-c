@@ -6,10 +6,11 @@
 char* strcat(char* pstr1, char* pstr2);
 char* strtok(char* str, char* del);
 int diystrcmp(const char* str1, const char* str2);
+int backcmp(const char* str1, const char* str2);
 
 int main(){
     char str1[500] = "LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOng";
-    char str2[100] = "NEWSTR";
+    char str2[100] = "АА страшная русская ё";
     char str3[10] = ",,,,";
     char str4[2] = "";
     char str5[50] = "-,-alylala,,,, 15 - lastly-";
@@ -24,10 +25,29 @@ int main(){
         res = strtok(NULL, del);
     }
     */
-
     printf("%d\n", diystrcmp(str2, str4));
 
     return 0;
+}
+
+int backcmp(const char* str1, const char* str2){
+
+    long unsigned int lstr1 = strlen(str1);
+    long unsigned int lstr2 = strlen(str2);
+    long unsigned int counter1 = lstr1;
+    long unsigned int counter2 = lstr2;
+
+    while((counter1 != 0) && (counter2 != 0)){
+        if( str1[counter1] > str2[counter2] ) return 1;
+        else if( str1[counter1] < str2[counter2] ) return -1;;
+        counter1--;
+        counter2--;
+    }
+
+    if( (counter1 == 0) && (counter2 == 0) ) return 0;
+    else if( counter1 == 0 ) return -1;
+         else return 1;
+
 }
 
 int diystrcmp(const char* str1, const char* str2){
@@ -116,7 +136,7 @@ char* strtok(char* str, char* del){
             }
         }
         
-        if( !inDelimiter && beginningFlag ) beginningFlag = false;     
+        if( !inDelimiter && beginningFlag ) beginningFlag = false;// Если вышли из последовательности  делимитеров в начале строки, то меняем флаг начала строки     
     }   
     
     if( inDelimiter ) endpointer[tokenEnd] = '\0'; //В случае выхода из-за конца строки так же ставим \0 в конце токена, но не перемещаем endpointer на следующий символ (а то segfault будет) 
