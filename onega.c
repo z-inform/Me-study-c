@@ -147,7 +147,8 @@ void getText(FILE* orig, int* charArr, int** strArr, int *strCount){
                 if( (disalpha(readchar) == 1) && 
                     (readchar != 0x49) && 
                     (readchar != 0x56) &&
-                    (readchar != 0x58) ) emptyFlag = false;
+                    (readchar != 0x58) &&
+                    (readchar != 0x4C) ) emptyFlag = false;
                 readchar = fgetc(orig);
             }
 
