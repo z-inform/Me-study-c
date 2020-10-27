@@ -3,6 +3,7 @@
 #include "chardecode.h"
 #include "comparator.h"
 #include <stdlib.h>
+#include <stdint.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -11,7 +12,7 @@ void printText(FILE* resFile, int* charArr);
 void getText(FILE* orig, int* charArr, int** strArr, int* strCount); 
 int countLen(FILE* orig);
 void printStr(FILE* resFile, int* str);
-void putChar(FILE* resFile, int unicodeChar);
+//void putChar(FILE* resFile, int32_t unicodeChar);
 int sortCompar(const void* str1, const void* str2);
 int backsortCompar(const void* str1, const void* str2);
 
@@ -24,8 +25,6 @@ int main(){
        return 1;
      }
 
-
-
     FILE* orig = fopen("gin.txt", "rb");
     if( orig == NULL ){
        printf("file open error\n");
@@ -36,12 +35,16 @@ int main(){
 
     stat("gin.txt", &filestats);
 
+
+
     int* charArr = (int*) calloc(filestats.st_size + 1, sizeof(int));
 
     int** strArr = (int**) calloc(countLen(orig) + 1, sizeof(int*));
     
     int strCountSort = 0;
     getText(orig, charArr, strArr, &strCountSort);
+
+
 
     fprintf(resFile, "---------------------Original Text-----------------\n"); 
     printText(resFile, charArr); 
@@ -60,9 +63,6 @@ int main(){
     for(int i = 0; strArr[i] != NULL; i++){
         printStr(resFile, strArr[i]);
     }
-
-
-
     fprintf(resFile, "---------------------End of sorted-----------------\n\n"); 
 
 
@@ -73,32 +73,33 @@ int main(){
     }
     fprintf(resFile, "---------------------End of backsorted-----------------\n\n"); 
 
+
+
+
     fclose(orig);
     fclose(resFile);
     free(charArr);
     free(strArr);
 
-
-
     return 0;
 }
 
 int backsortCompar(const void* str1, const void* str2){
-    return backdcmp((unsigned int*) *(int**)str1, (unsigned int*) *(int**)str2);
+    return backdcmp((uint32_t*) *(int**)str1, (uint32_t*) *(int**)str2);
 }
 
 
 int sortCompar(const void* str1, const void* str2){
-    return dcmp((unsigned int*) *(int**)str1, (unsigned int*) *(int**)str2);
+    return dcmp((uint32_t*) *(int**)str1, (uint32_t*) *(int**)str2);
 }
 
-void putChar(FILE* resFile, int unicodeChar){
+/*void putChar(FILE* resFile, int32_t unicodeChar){
     for(int move = 0; (move < 4); move++){
         char pointChar = (encodeChar(unicodeChar) << move * 8) >> 3*8;
         if( pointChar != 0x0 )  fputc(pointChar, resFile);
     }
 
-}
+}*/
 
 void printStr(FILE* resFile, int* str){
 
@@ -123,7 +124,7 @@ int countLen(FILE* orig){
 
 void getText(FILE* orig, int* charArr, int** strArr, int *strCount){
 
-    int readchar = 0;
+    int32_t readchar = 0;
     int scount = 0;
     int pcount = 1;
 
@@ -175,8 +176,4 @@ void printText(FILE* resFile, int* arr){
         else putChar(resFile, arr[i]);
     }
 }
-
-
-
-
 
